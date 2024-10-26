@@ -1,125 +1,110 @@
-Here's a detailed README file content that describes the project, including steps to create a repository, usage instructions, and more:
+Here’s a detailed `README.md` template for your project, **Real-Time Rule Engine with AST**:
+
+```markdown
+# Real-Time Rule Engine with AST
+
+This repository hosts the **Real-Time Rule Engine with Abstract Syntax Tree (AST)**, a Python-based project for creating, combining, modifying, and evaluating dynamic rules using ASTs. This rule engine allows flexible, condition-based decision-making that can be easily modified to accommodate changing business logic requirements.
+
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Directory Structure](#directory-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Examples](#examples)
+- [MongoDB Schema Example](#mongodb-schema-example)
+- [Future Enhancements](#future-enhancements)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-# Real-Time Data Processing System for Weather Monitoring with Rollups and Aggregates
-
-## Overview
-
-This project implements a rule engine using an Abstract Syntax Tree (AST) to evaluate complex rules against user data for weather monitoring. The engine allows for the combination of multiple rules, modification of existing rules, and evaluation based on specific user attributes.
+## Project Overview
+The Rule Engine utilizes an AST to process and evaluate conditional expressions against a user data dictionary. It supports operators (`AND`, `OR`) and allows combination and modification of multiple rules.
 
 ## Features
-
-- Create AST from rule strings.
-- Combine multiple ASTs into a single AST.
-- Evaluate rules against user data.
-- Modify existing rules dynamically.
-
-## Requirements
-
-- Python 3.x
-- Libraries: `re` (standard library)
+- **AST Generation**: Converts rule strings into an AST structure.
+- **Rule Combination**: Combines multiple ASTs into one using specified logic.
+- **Rule Evaluation**: Evaluates the AST against user data.
+- **Rule Modification**: Modifies specific conditions within an AST.
+- **MongoDB Compatibility**: Provides a sample MongoDB schema for storing rule structures.
 
 ## Directory Structure
-
+```plaintext
+Real-Time-Rule-Engine/
+├── rule_engine.py            # Main code for rule engine
+├── README.md                 # Project overview and instructions
+└── examples/                 
+    └── example_usage.py       # Example code for using the rule engine
 ```
-/Real-Time-Weather-Data-Processing-System
-├── main.py
-├── requirements.txt
-└── README.md
+
+## Installation
+### Prerequisites
+- Python 3.7 or later
+- Git
+- MongoDB (optional, for schema example)
+
+### Clone the Repository
+```bash
+git clone https://github.com/shubhangiwartale/Real-Time-Rule-Engine.git
+cd Real-Time-Rule-Engine
 ```
 
-## Getting Started
+### Install Dependencies
+Create a virtual environment and install any dependencies:
+```bash
+python -m venv env
+source env/bin/activate  # On Windows, use `env\Scripts\activate`
+pip install -r requirements.txt  # If a requirements file is provided
+```
 
-### Step 1: Clone the Repository
+## Usage
 
-1. Open your terminal (Command Prompt, PowerShell, or Git Bash).
-2. Clone the repository using the following command:
-
-   ```bash
-   git clone https://github.com/shubhangiwartale/Real-Time-Weather-Data-Processing-System.git
-   ```
-
-3. Navigate to the cloned directory:
-
-   ```bash
-   cd Real-Time-Weather-Data-Processing-System
-   ```
-
-### Step 2: Set Up Your Environment
-
-1. **Install Required Libraries** (if any). Create a `requirements.txt` file listing all dependencies:
-
-   ```plaintext
-   # requirements.txt
-   # No additional packages required for this example
-   ```
-
-2. (Optional) Set up a virtual environment:
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-3. **Install Dependencies**:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Step 3: Running the Application
-
-1. Open `main.py` in your favorite code editor.
-2. You can test the rule engine using the example usage provided in the code. 
-
-   ```python
-   # Example Usage for Rule Engine with AST
-   rule1 = "((age > 30 AND department = 'Sales') OR (age < 25 AND department = 'Marketing')) AND (salary > 50000 OR experience > 5)"
-   user_data = {
-       'age': 35,
-       'department': 'Sales',
-       'salary': 60000,
-       'experience': 3
-   }
-   print("User eligible based on combined rule:", evaluate_rule(combined_ast, user_data))
-   ```
-
-3. Run the application:
-
-   ```bash
-   python main.py
-   ```
-
-### Step 4: Modifying Rules
-
-To modify existing rules, use the `modify_rule` function in the code. For example:
-
+### Basic Rule Creation
+To create an AST from a rule string:
 ```python
-modify_rule(combined_ast, "age > 30", "age > 40")
+from rule_engine import create_rule
+
+rule = "((age > 30 AND department = 'Sales') OR (salary > 50000))"
+ast = create_rule(rule)
 ```
 
-### Step 5: Committing Changes
+### Rule Combination
+Combine multiple rules using `AND` or `OR` logic.
+```python
+from rule_engine import combine_rules
 
-1. After making changes to the code, stage and commit your changes:
+ast_combined = combine_rules([ast_rule1, ast_rule2])
+```
 
-   ```bash
-   git add .
-   git commit -m "Updated rule evaluation logic"
-   ```
+### Rule Evaluation
+Evaluate the AST against a sample user data dictionary.
+```python
+from rule_engine import evaluate_rule
 
-2. Push your changes to the remote repository:
+user_data = {
+    'age': 35,
+    'department': 'Sales',
+    'salary': 60000
+}
 
-   ```bash
-   git push origin main
-   ```
+result = evaluate_rule(ast_combined, user_data)
+print("Evaluation Result:", result)
+```
 
-## MongoDB Schema Design for Rules
+### Rule Modification
+Modify specific conditions in an existing rule.
+```python
+from rule_engine import modify_rule
 
-### Example Schema
+modify_rule(ast_combined, "age > 30", "age > 40")
+```
 
-To store the AST structure in MongoDB, consider the following schema:
+## Examples
+See `examples/example_usage.py` for detailed usage and more examples of combining, evaluating, and modifying rules.
 
+## MongoDB Schema Example
+An example schema for storing rules in MongoDB:
 ```json
 {
     "rule_id": "rule1",
@@ -146,16 +131,28 @@ To store the AST structure in MongoDB, consider the following schema:
 }
 ```
 
-## Non-Functional Requirements
+## Future Enhancements
+- **Support for Additional Operators**: Add support for more complex logical operations.
+- **Error Handling**: Improve error handling for invalid input formats.
+- **Database Integration**: Extend support for additional database types.
 
-- **Security**: Ensure user data is validated and sanitized.
-- **Performance**: Optimize rule evaluation for scalability.
-- **Logging**: Implement logging for rule evaluation and modifications for auditing purposes.
+## Contributing
+Feel free to contribute by forking this repository and submitting a pull request. All contributions are welcome!
 
 ## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### Steps to Add to GitHub Repository
 
-## Contact
+1. **Create and Commit the README**:
+    ```bash
+    echo "Your README content here" > README.md
+    git add README.md
+    git commit -m "Added README file with project description"
+    ```
 
-For questions or feedback, please contact shubhangiwartale@gmail.com.
+2. **Push Changes**:
+    ```bash
+    git push origin main
+    ```
